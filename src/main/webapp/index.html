@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Start Page</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style type="text/css">
+        	table{
+        		border: 1;cellspacing:0;
+        		width: 231px;
+        	}
+        	body{
+        		background-color: #ccc;
+        		text-align: center;
+        	}
+        	form{
+        	margin-top: 100px;
+        		display: inline-block;
+        	}
+        	#msg{
+        		color: red;
+        		display: none;
+        	}
+        </style>
+        <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script type="text/javascript">
+        $(function(){
+        	
+        	$("#reg").click(function(){
+        		$("h1").text("注册");
+        		$("form:first").hide();
+        		$("form:last").show();
+        	});
+        	$("#back").click(function(){
+        		$("h1").text("登录");
+        		$("form:last").hide();
+        		$("form:first").show();
+        	});
+        	$("#login").click(Login);
+        	$("#regist").click(Regist);
+        });
+        
+        function Login() {
+        	var name = $("form:first input:first").val();
+        	var pwd = $("form:first input:eq(1)").val();
+        	//console.log(name +  ", " + pwd);
+        	
+        	$.ajax({
+        		url:"login.do",
+        		type:"post",
+        		data:{
+        			name:name,
+        			pwd:pwd
+        		},
+        		dataType:"json",
+        		success:function(result){
+        			$("#msg").text(result.msg);
+        			console.log(result);
+        		}
+        	});
+        }
+        
+        function Regist() {
+        	var name = $("form:last input:first").val();
+        	var pwd = $("form:last input:eq(1)").val();
+        	//console.log(name +  ", " + pwd);
+        	$.ajax({
+        		url:"regist.do",
+        		type:"post",
+        		data:{
+        			name:name,
+        			pwd:pwd
+        		},
+        		dataType:"json",
+        		success:function(result){
+        			$("#msg").text(result.msg);
+        			console.log(result);
+        		}
+        	});
+        }
+        </script>
+    </head>
+    <body>
+    <h1>登录</h1>
+    <p id="msg"></p>
+    <form method="post">
+        <table border=1 cellspacing=0>
+        	<tr>
+        		<td>用户名</td>
+        		<td><input/></td>
+        	</tr>
+        	<tr>
+        		<td>密码</td>
+        		<td><input type="password"/></td>
+        	</tr>
+        	<tr>
+        		<td colspan="2"><input id="login" type="button" value="登录"/>
+        		<input id="reg" type="button" value="注册"/></td>
+        	</tr>
+        </table>
+    </form>
+    <form method="post" style="display: none;">
+        <table border=1 cellspacing=0>
+        	<tr>
+        		<td>用户名</td>
+        		<td><input/></td>
+        	</tr>
+        	<tr>
+        		<td>密码</td>
+        		<td><input type="password"/></td>
+        	</tr>
+        	<tr>
+        		<td colspan="2"><input id="regist" type="button" value="立即注册"/>
+        		<input id="back" type="button" value="<<返回"/></td>
+        	</tr>
+        </table>
+    </form>
+    </body>
+</html>
