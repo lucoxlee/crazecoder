@@ -1,10 +1,9 @@
 package top.latfat.crazecoder.controller;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -61,14 +60,10 @@ public class Main {
 		out.close();
 	}
 	
-	@RequestMapping(value="/api.do", method = { RequestMethod.GET }, produces = "application/json;charset=UTF-8")
-	public void api(WechatMsg msg, HttpServletResponse response) {
-		PrintWriter out = null;
-		try {
-			out = response.getWriter();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		out.println(api.checkWechat(msg));
+	@RequestMapping(value="/api.do", method = { RequestMethod.POST }, produces = "application/xml;charset=UTF-8")
+	public void api(HttpServletRequest request, PrintWriter out) {
+		out.println(api.handleRequest(request));
+		out.flush();
+		out.close();
 	}
 }
