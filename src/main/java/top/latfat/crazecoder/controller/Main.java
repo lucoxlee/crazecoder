@@ -1,11 +1,14 @@
 package top.latfat.crazecoder.controller;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,6 +31,8 @@ public class Main {
 	private UserService service;
 	@Resource
 	private APIService api;
+	
+	private Logger logger = Logger.getLogger(Main.class);
 
 	@RequestMapping("/login.do")
 	@ResponseBody
@@ -55,14 +60,25 @@ public class Main {
 	
 	@RequestMapping(value="/api.do", method = { RequestMethod.GET }, produces = "application/json;charset=UTF-8")
 	public void api(WechatMsg msg, PrintWriter out) {
+		logger.info("微信接入！！！");
 		out.println(api.checkWechat(msg));
 		out.flush();
 		out.close();
 	}
 	
 	@RequestMapping(value="/api.do", method = { RequestMethod.POST }, produces = "application/xml;charset=UTF-8")
-	public void api(HttpServletRequest request, PrintWriter out) {
-		out.println(api.handleRequest(request));
+	public void api(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		PrintWriter out = response.getWriter();
+		try {
+			out.println(api.handleRequest(request));
+			logger.info("处理请求成功！！！");
+		} catch (IOException e) {
+			out.println("");
+			logger.info("处理请求失败！！！");
+			e.printStackTrace();
+		}
 		out.flush();
 		out.close();
 	}

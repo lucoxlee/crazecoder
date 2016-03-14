@@ -1,7 +1,5 @@
 package top.latfat.crazecoder;
 
-import java.util.Arrays;
-
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,9 +21,6 @@ public class TestCase{
 	@Test
 	public void test() {
 		
-		String[] arr = new String[]{"abc", "def", "ghk"};
-		Arrays.sort(arr);
-		System.out.println(arr.toString());
 	}
 	
 }
