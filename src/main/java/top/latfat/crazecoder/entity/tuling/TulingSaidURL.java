@@ -1,0 +1,17 @@
+package top.latfat.crazecoder.entity.tuling;
+
+
+public class TulingSaidURL extends TulingSaid {
+
+	protected String url;
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	@Override
+	public String toString() {
+		return "code=" + code + "\ntext=" + text + "\nurl=" + url + "\n";
+	}
+}
