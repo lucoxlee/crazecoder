@@ -15,22 +15,42 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.springframework.stereotype.Component;
+import org.springframework.expression.spel.ast.TypeReference;
 
-import top.latfat.crazecoder.entity.TulingSaid;
+import top.latfat.crazecoder.entity.tuling.Menu;
+import top.latfat.crazecoder.entity.tuling.News;
+import top.latfat.crazecoder.entity.tuling.TulingSaid;
+import top.latfat.crazecoder.entity.tuling.TulingSaidList;
+import top.latfat.crazecoder.entity.tuling.TulingSaidURL;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@Component
 public class TalkingHttpClint {
 
-	private	CloseableHttpClient client = HttpClients.createDefault();
-	private ObjectMapper mapper = new ObjectMapper();
+	private	CloseableHttpClient client;
+	private ObjectMapper mapper;
 	
-	public String talkingTuling(String info, String user) {
-		HttpPost post = new HttpPost("http://www.tuling123.com/openapi/api");
+	private String host;
+	private final String key;
+	private String serverDownSaid;
+	
+	public TalkingHttpClint(String host, String key, String defaultSay) {
+		this.key = key;
+		this.host = host;
+		this.serverDownSaid = defaultSay;
+		client = HttpClients.createDefault();
+		mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+	}
+	
+	public TulingSaid talkingTuling(String info, String user) {
+		HttpPost post = new HttpPost(host);
+		TulingSaid said = new TulingSaid();
+		said.setCode(100000);
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-		formparams.add(new BasicNameValuePair("key", "87b840fa3810d8a85deb3ae13cf6d7cd"));
+		formparams.add(new BasicNameValuePair("key", key));
 		formparams.add(new BasicNameValuePair("info", info));
 		formparams.add(new BasicNameValuePair("userid", user));
         UrlEncodedFormEntity uefEntity;  
@@ -40,13 +60,23 @@ public class TalkingHttpClint {
           //  System.out.println("executing request " + post.getURI());  
             CloseableHttpResponse response = client.execute(post);  
             try {  
-                HttpEntity entity = response.getEntity();  
+                HttpEntity entity = response.getEntity();
+                String json = EntityUtils.toString(entity);
                 if (entity != null) {  
-                	TulingSaid said = (TulingSaid) mapper.readValue(EntityUtils.toString(entity), TulingSaid.class);
-                	if (said.getCode() == 100000) {
-						return said.getText();
+                	said =  mapper.readValue(json, TulingSaid.class);
+                	switch(said.getCode()) {
+                	case 100000:
+						return said;
+                	case 200000:
+                		return mapper.readValue(json, TulingSaidURL.class);
+                	case 302000:
+                		return (TulingSaidList<News>) mapper.readValue(json, getCollectionType(List.class, News.class));
+                	case 308000:
+              //  		return (TulingSaidList<Menu>) mapper.readValue(json, new TypeReference<List<Menu>>(){});
 					}
                 }  
+            } catch(Exception e){
+            	e.printStackTrace();
             } finally {  
                 response.close();  
             }  
@@ -56,18 +86,31 @@ public class TalkingHttpClint {
             e1.printStackTrace();  
         } catch (IOException e) {  
             e.printStackTrace();  
-        }
-        return "啊，我爸爸出去打酱油了，爸爸不让我跟陌生人说话。";
+        } catch (Exception e) {
+        	e.printStackTrace();
+		}
+        said.setText(serverDownSaid);
+        return said;
 	}
 	
 	public void destory() {
-	            // 关闭连接,释放资源    
-	            try {
-	            	if (client != null) {
-	            		client.close();  
-					}
-	            } catch (IOException e) {  
-	                e.printStackTrace();  
-	            }  
+        // 关闭连接,释放资源    
+        try {
+        	if (client != null) {
+        		client.close();  
+			}
+        } catch (IOException e) {  
+            e.printStackTrace();  
+        }  
 	}
+    /**   
+     * 获取泛型的Collection Type  
+     * @param collectionClass 泛型的Collection   
+     * @param elementClasses 元素类   
+     * @return JavaType Java类型   
+     * @since 1.0   
+     */   
+     public JavaType getCollectionType(Class<?> collectionClass, Class<?>... elementClasses) {   
+         return mapper.getTypeFactory().constructParametricType(collectionClass, elementClasses);   
+     } 
 }

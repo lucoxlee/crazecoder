@@ -4,9 +4,9 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import top.latfat.crazecoder.entity.InputMessage;
-import top.latfat.crazecoder.entity.OutputMessage;
-import top.latfat.crazecoder.entity.TulingSaid;
+import top.latfat.crazecoder.entity.tuling.TulingSaid;
+import top.latfat.crazecoder.entity.wechat.InputMessage;
+import top.latfat.crazecoder.entity.wechat.OutputMessage;
 import top.latfat.crazecoder.httpclint.TalkingHttpClint;
 import top.latfat.crazecoder.service.impl.SerializeXmlUtil;
 
@@ -44,10 +44,11 @@ public class TestXmlUtil {
 	
 	@Test
 	public void testTuling() throws InterruptedException {
-		System.out.println(new TalkingHttpClint().talkingTuling("明天哪班飞机有票啊", "122"));
-		Thread.sleep(2000);
-		System.out.println(new TalkingHttpClint().talkingTuling("上海", "122"));
-		Thread.sleep(2000);
-		System.out.println(new TalkingHttpClint().talkingTuling("深圳", "122"));
+//	//	TalkingHttpClint clint = new TalkingHttpClint(host, key, defaultSay);
+//		System.out.println(clint.talkingTuling("明天哪班飞机有票啊", "122"));
+//		Thread.sleep(2000);
+//		System.out.println(clint.talkingTuling("上海", "122"));
+//		Thread.sleep(2000);
+//		System.out.println(clint.talkingTuling("深圳", "122"));
 	}
 }

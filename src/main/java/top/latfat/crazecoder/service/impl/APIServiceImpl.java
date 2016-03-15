@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 
 import com.thoughtworks.xstream.XStream;
 
-import top.latfat.crazecoder.entity.InputMessage;
-import top.latfat.crazecoder.entity.OutputMessage;
-import top.latfat.crazecoder.entity.WechatMsg;
+import top.latfat.crazecoder.entity.wechat.InputMessage;
+import top.latfat.crazecoder.entity.wechat.OutputMessage;
+import top.latfat.crazecoder.entity.wechat.WechatMsg;
 import top.latfat.crazecoder.httpclint.TalkingHttpClint;
 import top.latfat.crazecoder.service.APIService;
 
@@ -61,7 +61,7 @@ public class APIServiceImpl implements APIService {
 			out.setFromUserName(in.getToUserName());
 			out.setCreateTime(System.currentTimeMillis()/1000);
 			out.setMsgType("text");
-			out.setContent(clint.talkingTuling(in.getContent(), in.getFromUserName()));
+		//	out.setContent(clint.talkingTuling(in.getContent(), in.getFromUserName()));
 		}
 		return xs.toXML(out);
 	}

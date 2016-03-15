@@ -36,8 +36,14 @@
 	<!-- 关闭aop cglib代理 -->  
 	<aop:config proxy-target-class="true"/>
 	
-	<bean class="top.latfat.crazecoder.entity.WechatMsg">
+	<bean class="top.latfat.crazecoder.entity.wechat.WechatMsg">
 		<constructor-arg name="token" value="${token}"/>
 	</bean>
 	
+	<bean class="top.latfat.crazecoder.httpclint.TalkingHttpClint" destroy-method="destory">
+		<constructor-arg name="host" value="${host}"/>
+		<constructor-arg name="key" value="${key}"/>
+		<constructor-arg name="defaultSay" value="${defaultSay}"/>
+	</bean>
+
 </beans>

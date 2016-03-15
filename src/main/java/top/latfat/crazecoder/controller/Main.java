@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import top.latfat.crazecoder.entity.Result;
 import top.latfat.crazecoder.entity.User;
-import top.latfat.crazecoder.entity.WechatMsg;
+import top.latfat.crazecoder.entity.wechat.WechatMsg;
 import top.latfat.crazecoder.service.APIService;
 import top.latfat.crazecoder.service.UserService;
 /**
@@ -67,11 +67,12 @@ public class Main {
 	}
 	
 	@RequestMapping(value="/api.do", method = { RequestMethod.POST }, produces = "application/xml;charset=UTF-8")
-	public void api(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		request.setCharacterEncoding("UTF-8");
-		response.setCharacterEncoding("UTF-8");
-		PrintWriter out = response.getWriter();
+	public void api(HttpServletRequest request, HttpServletResponse response) {
+		PrintWriter out = null;
 		try {
+			request.setCharacterEncoding("UTF-8");
+			response.setCharacterEncoding("UTF-8");
+			out = response.getWriter();
 			out.println(api.handleRequest(request));
 			logger.info("处理请求成功！！！");
 		} catch (IOException e) {

@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 
-import top.latfat.crazecoder.entity.WechatMsg;
+import top.latfat.crazecoder.entity.wechat.WechatMsg;
 
 public interface APIService {
 
