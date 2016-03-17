@@ -38,7 +38,7 @@ public class TestCase{
 	
 	@Test
 	public void testTulingList() throws InterruptedException {
-		TulingSaid list =  clint.talkingTuling("鱼香肉丝怎么做？", "");
+		TulingSaid list =  clint.talkingTuling("鱼香肉丝怎么做？", "11");
 		System.out.println(list.toString());
 	}
 	

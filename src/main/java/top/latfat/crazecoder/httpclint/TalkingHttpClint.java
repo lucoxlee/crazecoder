@@ -15,7 +15,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.springframework.expression.spel.ast.TypeReference;
 
 import top.latfat.crazecoder.entity.tuling.Menu;
 import top.latfat.crazecoder.entity.tuling.News;
@@ -45,6 +44,7 @@ public class TalkingHttpClint {
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public TulingSaid talkingTuling(String info, String user) {
 		HttpPost post = new HttpPost(host);
 		TulingSaid said = new TulingSaid();
@@ -62,6 +62,7 @@ public class TalkingHttpClint {
             try {  
                 HttpEntity entity = response.getEntity();
                 String json = EntityUtils.toString(entity);
+         //       System.out.println(json);
                 if (entity != null) {  
                 	said =  mapper.readValue(json, TulingSaid.class);
                 	switch(said.getCode()) {
@@ -70,9 +71,9 @@ public class TalkingHttpClint {
                 	case 200000:
                 		return mapper.readValue(json, TulingSaidURL.class);
                 	case 302000:
-                		return (TulingSaidList<News>) mapper.readValue(json, getCollectionType(List.class, News.class));
+                		return (TulingSaidList<News>) mapper.readValue(json, getCollectionType(TulingSaidList.class, News.class));
                 	case 308000:
-              //  		return (TulingSaidList<Menu>) mapper.readValue(json, new TypeReference<List<Menu>>(){});
+                		return (TulingSaidList<Menu>) mapper.readValue(json, getCollectionType(TulingSaidList.class, Menu.class));
 					}
                 }  
             } catch(Exception e){

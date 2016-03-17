@@ -32,10 +32,10 @@ public class SerializeXmlUtil {
                     public void startNode(String name, @SuppressWarnings("rawtypes") Class clazz) {  
                         super.startNode(name, clazz);  
                         // 业务处理，对于用XStreamCDATA标记的Field，需要加上CDATA标签  
-                        if (!name.equals("xml")) {  
+                        if (!(name.equals("xml") || name.equals("item"))) {  
                             cdata = needCDATA(targetClass, name);  
                         } else {  
-                            targetClass = clazz;  
+                            targetClass = clazz;
                         }  
                     }  
   

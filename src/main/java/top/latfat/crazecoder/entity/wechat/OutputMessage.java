@@ -1,5 +1,7 @@
 package top.latfat.crazecoder.entity.wechat;  
   
+import java.util.List;
+
 import top.latfat.crazecoder.service.XStreamCDATA;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -25,12 +27,19 @@ public class OutputMessage {
   
     @XStreamAlias("MsgType")  
     @XStreamCDATA  
-    private String MsgType = "text";
+    private String MsgType;
     
     @XStreamAlias("Content")
     @XStreamCDATA
     private String Content;
-  
+    
+    @XStreamAlias("ArticleCount")
+    private Integer ArticleCount;
+    
+    @XStreamAlias("Articles")
+    @XStreamCDATA
+    private List<Item> Articles;
+    
     public String getToUserName() {  
         return ToUserName;  
     }  
@@ -59,7 +68,7 @@ public class OutputMessage {
         return MsgType;  
     }  
   
-    public void setMsgType(String msgType) {  
+    public void setMsgType(String msgType) {
         MsgType = msgType;  
     }  
 
@@ -71,11 +80,27 @@ public class OutputMessage {
 		Content = content;
 	}
 
+	public Integer getArticleCount() {
+		return ArticleCount;
+	}
+
+	public void setArticleCount(Integer articleCount) {
+		ArticleCount = articleCount;
+	}
+
+	public List<Item> getArticles() {
+		return Articles;
+	}
+
+	public void setArticles(List<Item> articles) {
+		Articles = articles;
+	}
+
 	@Override
 	public String toString() {
 		return "ToUserName=" + ToUserName + "\nFromUserName=" + FromUserName
 				+ "\nCreateTime=" + CreateTime + "\nMsgType=" + MsgType
-				+ "\nContent=" + Content;
+				+ "\nContent=" + Content + "\nArticleCount=" + ArticleCount
+				+ "\nArticles=" + Articles + "\n";
 	}
-  
 }  
