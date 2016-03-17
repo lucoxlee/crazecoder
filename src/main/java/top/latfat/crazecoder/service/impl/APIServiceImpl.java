@@ -126,7 +126,7 @@ public class APIServiceImpl implements APIService {
 			
 			List<News> list = saidList.getList();
 			List<Item> news = new ArrayList<Item>();
-			out.setArticleCount(list.size());
+			out.setArticleCount(list.size()>10?10:list.size());
 			for (News n : list) {
 				Item item = new Item();
 				item.setTitle(n.getArticle());
@@ -144,7 +144,8 @@ public class APIServiceImpl implements APIService {
 			
 			List<Menu> i = saidMenu.getList();
 			List<Item> menu = new ArrayList<Item>();
-			out.setArticleCount(i.size());
+			out.setArticleCount(i.size()>10?10:i.size());
+			int index = 0;
 			for (Menu n : i) {
 				Item item = new Item();
 				item.setTitle(n.getName());
@@ -152,6 +153,10 @@ public class APIServiceImpl implements APIService {
 				item.setPicUrl(n.getIcon());
 				item.setUrl(n.getDetailurl());
 				menu.add(item);
+				index++;
+				if (index >= 10) {
+					break;
+				}
 			}
 			out.setArticles(menu);
 			break;
