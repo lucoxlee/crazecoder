@@ -17,4 +17,9 @@ public class News extends UrlList {
 	public void setSource(String source) {
 		this.source = source;
 	}
+	@Override
+	public String toString() {
+		return "article=" + article + "\nsource=" + source + "\nicon=" + icon
+				+ "\ndetailurl=" + detailurl + "\n";
+	}
 }

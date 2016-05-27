@@ -114,5 +114,27 @@
         	</tr>
         </table>
     </form>
+    <p id="info"></p>
+    <input id="talk"/>
+    <button onclick="Talking();">说</button>
+    <script type="text/javascript">
+    	function Talking() {
+    		$("#info").text("");
+    		var txt = $("#talk").val();
+    		$.post(
+	    		"api.do",
+	    		" <xml> " +
+				 "<ToUserName><![CDATA[toUser]]></ToUserName>" +
+				 "<FromUserName><![CDATA[fromUser]]></FromUserName>" +
+				 "<CreateTime>1348831860</CreateTime>" +
+				 "<MsgType><![CDATA[text]]></MsgType>" +
+				 "<Content><![CDATA["+ txt +"]]></Content>" +
+				 "<MsgId>1234567890123456</MsgId>" +
+				 "</xml>",
+	    		function(result) {
+		    		$("#info").text(result);
+	    		});
+    	}
+    </script>
     </body>
 </html>

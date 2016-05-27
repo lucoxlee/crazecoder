@@ -4,17 +4,16 @@ public class Menu extends UrlList {
 
 	private String name;
 	private String info;
-
-	public String getArticle() {
+	public String getName() {
 		return name;
 	}
-	public void setArticle(String article) {
-		this.name = article;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public String getSource() {
+	public String getInfo() {
 		return info;
 	}
-	public void setSource(String source) {
-		this.info = source;
+	public void setInfo(String info) {
+		this.info = info;
 	}
 }
